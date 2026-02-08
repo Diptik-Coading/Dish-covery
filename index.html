@@ -1,0 +1,387 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DishCovery - Discover Delicious Recipes</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header class="header">
+      <div class="container">
+        <div class="logo">
+          <h1>🍳 DishCovery</h1>
+        </div>
+        <nav class="nav">
+          <a href="#home" class="nav-link active">Home</a>
+          <a href="#finder" class="nav-link">Recipe Finder</a>
+          <a href="#recommended" class="nav-link">Recommended</a>
+          <a href="#dietary" class="nav-link">Dietary Profile</a>
+          <a href="#about" class="nav-link">About Us</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+        <!-- Header controls: Auth button and mobile nav toggle -->
+        <div class="header-right">
+          <button id="auth-btn" class="btn-auth">Login</button>
+          <button class="nav-toggle" aria-label="toggle navigation">
+            <span class="hamburger"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Main Content Area for SPA-like navigation -->
+    <main id="main-content">
+      <!-- Home Page Section -->
+      <section id="home" class="page active">
+        <!-- Hero Section -->
+        <div class="hero">
+          <div class="container">
+            <h2 class="hero-title">Discover Amazing Recipes</h2>
+            <p class="hero-subtitle">Find the perfect recipe for any occasion with our extensive collection</p>
+            <button class="btn-primary" onclick="navigateTo('finder')">Start Exploring</button>
+          </div>
+        </div>
+        
+        <!-- Features Section -->
+        <div class="container">
+          <div class="features">
+            <div class="feature-card">3
+              <div class="feature-icon">🔍</div>
+              <h3>Search Recipes</h3>
+              <p>Find recipes by ingredients, cuisine, or meal type</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🥗</div>
+              <h3>Dietary Filters</h3>
+              <p>Get recipes matching your dietary preferences</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📊</div>
+              <h3>Nutrition Info</h3>
+              <p>View detailed nutritional information for recipes</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recipe Finder Page Section -->
+      <section id="finder" class="page">
+        <div class="container">
+          <h2 class="page-title">Recipe Finder</h2>
+
+          <!-- Search Input and Button -->
+          <div class="search-section">
+            <input type="text" id="search-input" class="search-input" placeholder="Search for recipes (e.g., chicken, pasta, salad)..." />
+            <button class="btn-primary" onclick="searchRecipes()">Search</button>
+          </div>
+
+          <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading recipes...</p>
+          </div>
+
+          <!-- Grid to display search results -->
+          <div id="recipes-grid" class="recipes-grid"></div>
+        </div>
+      </section>
+
+      <!-- Dietary Profile Page Section -->
+      <section id="dietary" class="page">
+        <div class="container">
+          <h2 class="page-title">Your Dietary Profile</h2>
+          <p class="page-subtitle">Set your dietary preferences to get personalized recommendations</p>
+          
+          <div class="dietary-container">
+            <div class="dietary-section">
+              <h3>Diet Type</h3>
+              <div class="diet-options">
+                <label class="diet-checkbox">
+                  <input type="checkbox" name="diet" value="vegetarian" onchange="updateDietaryProfile()">
+                  <span class="checkmark"></span>
+                  🥬 Vegetarian
+                </label>
+                <label class="diet-checkbox">
+                  <input type="checkbox" name="diet" value="vegan" onchange="updateDietaryProfile()">
+                  <span class="checkmark"></span>
+                  🌱 Vegan
+                </label>
+                <label class="diet-checkbox">
+                  <input type="checkbox" name="diet" value="keto" onchange="updateDietaryProfile()">
+                  <span class="checkmark"></span>
+                  🥓 Keto
+                </label>
+                <label class="diet-checkbox">
+                  <input type="checkbox" name="diet" value="paleo" onchange="updateDietaryProfile()">
+                  <span class="checkmark"></span>
+                  🍗 Non-Veg
+                </label>
+              </div>
+            </div>
+
+            <div class="dietary-section">
+              <h3>Allergies & Restrictions</h3>
+              <div class="allergy-options">
+                <label class="diet-checkbox">
+                  <input type="checkbox" name="allergy" value="gluten-free" onchange="updateDietaryProfile()">
+                  <span class="checkmark"></span>
+                  🌾 Gluten-Free
+                </label>
+                <label class="diet-checkbox">
+                  <input type="checkbox" name="allergy" value="dairy-free" onchange="updateDietaryProfile()">
+                  <span class="checkmark"></span>
+                  🥛 Dairy-Free
+                </label>
+                <label class="diet-checkbox">
+                  <input type="checkbox" name="allergy" value="nut-free" onchange="updateDietaryProfile()">
+                  <span class="checkmark"></span>
+                  🥜 Nut-Free
+                </label>
+                <label class="diet-checkbox">
+                  <input type="checkbox" name="allergy" value="shellfish-free" onchange="updateDietaryProfile()">
+                  <span class="checkmark"></span>
+                  🦐 Seafood-Free
+                </label>
+              </div>
+            </div>
+
+            <div class="dietary-section">
+              <h3>Nutrition Goals</h3>
+              <div class="nutrition-goals">
+                <div class="goal-item">
+                  <label for="calorie-target">Daily Calorie Target:</label>
+                  <input type="number" id="calorie-target" min="1000" max="3500" value="2000" onchange="updateDietaryProfile()">
+                </div>
+                <div class="goal-item">
+                  <label for="protein-target">Protein Goal (g):</label>
+                  <input type="number" id="protein-target" min="0" max="300" value="50" onchange="updateDietaryProfile()">
+                </div>
+                <div class="goal-item">
+                  <label for="carbs-target">Carbs Goal (g):</label>
+                  <input type="number" id="carbs-target" min="0" max="500" value="200" onchange="updateDietaryProfile()">
+                </div>
+                <div class="goal-item">
+                  <label for="fat-target">Fat Goal (g):</label>
+                  <input type="number" id="fat-target" min="0" max="200" value="65" onchange="updateDietaryProfile()">
+                </div>
+              </div>
+            </div>
+
+            <button class="btn-primary btn-save" onclick="saveDietaryProfile()">Save Profile</button>
+            <div id="profile-message" class="profile-message"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recommended Recipes Page Section -->
+      <section id="recommended" class="page">
+        <div class="container">
+          <h2 class="page-title">Recommended Recipes</h2>
+          <p class="page-subtitle">Discover amazing recipes tailored just for you</p>
+          
+          <div class="cuisine-buttons" style="text-align: center; margin-bottom: 32px;">
+            <button class="btn-primary" onclick="loadCuisineRecommendations('Indian')" style="margin: 0 8px;">🍛 Indian Food</button>
+            <button class="btn-primary" onclick="loadCuisineRecommendations('Chinese')" style="margin: 0 8px;">🥡 Chinese Food</button>
+            <button class="btn-primary" onclick="loadRecommendedRecipes()" style="margin: 0 8px;">🎲 Random</button>
+          </div>
+
+          <!-- Grid to display recommended recipes -->
+          <div id="recommended-grid" class="recipes-grid"></div>
+        </div>
+      </section>
+
+      <!-- About Us Page Section -->
+      <section id="about" class="page">
+        <div class="container">
+          <h2 class="page-title">About Us</h2>
+
+          <div class="about-content">
+            <div class="about-text">
+              <h3>Welcome to DishCovery</h3>
+              <p>DishCovery is your ultimate companion in the kitchen. We believe that cooking should be fun, accessible, and inspiring for everyone.</p>
+
+              <h3>Our Mission</h3>
+              <p>Our mission is to help home cooks discover new recipes, learn cooking techniques, and create memorable meals for their loved ones. We curate recipes from around the world and make them easy to follow.</p>
+
+              <h3>What We Offer</h3>
+              <ul>
+                <li>Thousands of recipes from various cuisines</li>
+                <li>Personalized dietary profile management</li>
+                <li>Nutrition information for every recipe</li>
+                <li>Built-in cooking timer for perfect timing</li>
+                <li>Step-by-step cooking instructions</li>
+              </ul>
+            </div>
+
+            <div class="about-image">
+              <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cooking" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Us Page Section -->
+      <section id="contact" class="page">
+        <div class="container">
+          <h2 class="page-title">Contact Us</h2>
+          <p class="page-subtitle">Have questions or suggestions? We'd love to hear from you!</p>
+
+          <div class="contact-content">
+            <form class="contact-form" onsubmit="handleContactSubmit(event)">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required />
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required />
+              </div>
+
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" required />
+              </div>
+
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+              </div>
+
+              <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+
+            <div class="contact-info">
+              <h3>Get In Touch</h3>
+              <div class="info-item">
+                <strong>Email:</strong>
+                <p>diptikraj@gmail.com</p>
+              </div>
+              <div class="info-item">
+                <strong>Phone:</strong>
+                <p>+91 6296643146</p>
+              </div>
+              <div class="info-item">
+                <strong>Address:</strong>
+                <p>Baruipur, Kolkata <br>KOL-700144</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="modal">
+      <div class="modal-content auth-modal-content">
+        <span class="close" onclick="closeAuthModal()">&times;</span>
+        <div class="auth-tabs">
+          <button class="auth-tab-btn active" onclick="switchAuthTab('login')">Login</button>
+          <button class="auth-tab-btn" onclick="switchAuthTab('register')">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" required />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" required />
+          </div>
+          <button type="submit" class="btn-primary btn-full">Login</button>
+        </form>
+
+        <!-- Registration Form -->
+        <form id="register-form" class="auth-form" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label for="register-name">Full Name</label>
+            <input type="text" id="register-name" required />
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" required />
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" required />
+          </div>
+          <div class="form-group">
+            <label for="register-confirm">Confirm Password</label>
+            <input type="password" id="register-confirm" required />
+          </div>
+          <button type="submit" class="btn-primary btn-full">Register</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Cooking Timer Widget -->
+    <div id="timer-widget" class="timer-widget">
+      <div class="timer-header">
+        <h3>Cooking Timer</h3>
+        <button class="timer-toggle" onclick="toggleTimer()">−</button>
+      </div>
+      <div class="timer-content">
+        <div class="timer-display">
+          <span id="timer-hours">00</span>:<span id="timer-minutes">00</span>:<span id="timer-seconds">00</span>
+        </div>
+        <div class="timer-inputs">
+          <input type="number" id="input-hours" placeholder="HH" min="0" max="23" value="0" />
+          <span>:</span>
+          <input type="number" id="input-minutes" placeholder="MM" min="0" max="59" value="0" />
+          <span>:</span>
+          <input type="number" id="input-seconds" placeholder="SS" min="0" max="59" value="0" />
+        </div>
+        <div class="timer-controls">
+          <button class="btn-timer btn-start" onclick="startTimer()">Start</button>
+          <button class="btn-timer btn-pause" onclick="pauseTimer()">Pause</button>
+          <button class="btn-timer btn-reset" onclick="resetTimer()">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recipe Detail Modal -->
+    <div id="recipe-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>DishCovery</h3>
+            <p>Your ultimate destination for discovering delicious recipes from around the world.</p>
+          </div>
+
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#finder">Recipe Finder</a></li>
+              <li><a href="#dietary">Dietary Profile</a></li>
+              <li><a href="#about">About Us</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-section">
+            <h4>Follow Us</h4>
+            <div class="social-links">
+              <a href="#" class="social-link">f</a>
+              <a href="#" class="social-link">in</a>
+              <a href="#" class="social-link">𝕏</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Main JavaScript file for application logic -->
+    <script src="app.js"></script>
+  </body>
+</html>
